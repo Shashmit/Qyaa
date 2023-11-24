@@ -1,0 +1,27 @@
+const mongoose = require('mongoose');
+
+const adminSchema = mongoose.Schema({
+    hotel_name: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    userLogs: {
+        type: Array,
+        "default": []
+    }
+});
+
+const Admin = mongoose.model('Admin', adminSchema);
+module.exports = Admin;
