@@ -71,10 +71,9 @@ function checkAuthController(req, res) {
 function logoutController(req, res) {
   try {
     req.session.destroy((err) => {
-      if (err)
-        res.status(400);
+      if (err) res.status(400);
       else
-          res.status(200).json({
+        res.status(200).json({
           isLoggedIn: false,
           response: "Admin Logged Out Successfully!",
         });
@@ -91,7 +90,9 @@ async function userDataController(req, res) {
     const email = req.body.email;
     const userExists = await UserDetails.findOne({ userId });
     if (!userExists) {
-      return res.status(500).json({ "response": "User Aadhaar not verified Yet!" });
+      return res
+        .status(500)
+        .json({ response: "User Aadhaar not verified Yet!" });
     }
     const storedata = userExists.aadhaarDetails.data.data;
     const user = await UserModel.findOne({ email });
@@ -99,9 +100,8 @@ async function userDataController(req, res) {
       user.userLogs.push(storedata);
       await user.save();
     }
-    res.status(200).json({storedata});
-  }
-  catch (err) {
+    res.status(200).send({ storedata });
+  } catch (err) {
     console.log(err);
     res.sendStatus(400);
   }
@@ -112,5 +112,5 @@ module.exports = {
   registerController,
   checkAuthController,
   logoutController,
-  userDataController
+  userDataController,
 };
