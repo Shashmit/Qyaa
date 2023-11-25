@@ -15,7 +15,7 @@ const AuthLayout = () => {
     }).then((res) => {
       if (res?.data?.isLoggedIn) {
         navigate("admin");
-      } 
+      }
     });
   }, [navigate]);
 

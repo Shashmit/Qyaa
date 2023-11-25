@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import Scanner from "../components/Scanner";
+import Base64ToImage from "../components/Base64ToImage";
 
 const Admin = () => {
   const [userId, setUserId] = useState("");
   const [email, setEmail] = useState("");
+  const [data, setData] = useState(null);
 
   function handleSubmit() {
     setUserId((prev) => localStorage.getItem("qr"));
@@ -22,11 +24,9 @@ const Admin = () => {
       },
     })
       .then((res) => {
-        // localStorage.removeItem("qr");
-        console.log(res);
+        setData(res.data.storedata);
       })
       .catch((err) => {
-        // localStorage.removeItem("qr");
         console.log(err);
       });
   }
@@ -49,7 +49,43 @@ const Admin = () => {
         </div>
         <div className="w-full bg-texter rounded-2xl shadow sm:max-w-md py-8 gap-5">
           <div className="px-3">
-            <h1>{res}</h1>
+            {data === null ? (
+              <div>it will be genterated</div>
+            ) : (
+              <div className="flex flex-row justify-between px-3">
+                <div>
+                  <br />
+                  <label className="text-sm font-medium text-gray-700">
+                    Aadhar Number
+                  </label>
+                  <p>{data.aadhaarUid}</p>
+                  <div className="flex flex-row gap-2 items-center">
+                    <label className="text-sm font-medium text-gray-700">
+                      Name :
+                    </label>
+                    <h1>{data.proofOfIdentity.name}</h1>
+                  </div>
+                  <div className="flex flex-row gap-2 items-center">
+                    <label className="text-sm font-medium text-gray-700 ">
+                      Date of Birth :
+                    </label>
+                    <h3>{data.proofOfIdentity.dob}</h3>
+                  </div>
+                  <div className="flex flex-row gap-2 items-center">
+                    <label className="text-sm font-medium text-gray-700 ">
+                      Gender :
+                    </label>
+                    <p>{data.proofOfIdentity.gender}</p>
+                  </div>
+                  <p>
+                    {data.proofOfAddress.district +
+                      ", " +
+                      data.proofOfAddress.state}
+                  </p>
+                </div>
+                <Base64ToImage base64Image={data.image} />
+              </div>
+            )}
           </div>
         </div>
       </div>
