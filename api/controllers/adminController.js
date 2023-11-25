@@ -99,7 +99,7 @@ async function userDataController(req, res) {
       user.userLogs.push(storedata);
       await user.save();
     }
-    res.sendStatus(200);
+    res.status(200).json({storedata});
   }
   catch (err) {
     console.log(err);
